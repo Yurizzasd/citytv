@@ -1,5 +1,0 @@
-/* Cloudflare Pages: SPA fallback — todas as rotas servem index.html */
-/
-  X-Frame-Options: SAMEORIGIN
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
