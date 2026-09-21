@@ -1,8 +1,8 @@
 // Base + fetch helper da Anivexa — ÚNICO lugar com URLs da Anivexa no frontend.
 // Endpoints oficiais (v2.2.1): /map/:id, /episodes/:id,
 // /episodes/:provider/.../:id, /watch/:provider/:id/sub|dub/:provider-:ep
-import { anivexaBaseUrl, apiConfig } from '../../../config/site.js';
-import { cached, deduped } from '../../../utils/cache.js';
+import { anivexaBaseUrl, apiConfig } from '../../config/site.js';
+import { cached, deduped } from '../../utils/cache.js';
 
 export class AnivexaError extends Error {
   constructor(message, { status = 0, code = 'UNKNOWN' } = {}) {

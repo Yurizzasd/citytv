@@ -1,7 +1,7 @@
 // Camada de EPISÓDIOS (episodeService). Fonte: Anivexa API.
 // GET /episodes/:anilistId  (todos os provedores em paralelo)
 // GET /episodes/:provider/:anilistId (filtrado — mais rápido quando há preferência)
-import { PROVIDER_PRIORITY } from '../../../config/providers.js';
+import { PROVIDER_PRIORITY } from '../../config/providers.js';
 import { anivexaFetch, AnivexaError } from './config.js';
 
 const EP_TTL = 10 * 60 * 1000;

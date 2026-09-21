@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { adsConfig } from '../config/ads.js';
+import { adsConfig } from '../../config/ads.js';
 
 // Slot de anúncio AdCash — placeholder discreto.
 // COM ADS DESLIGADOS: renderiza apenas um contêiner vazio (sem rede, sem layout shift grande).

@@ -1,7 +1,7 @@
 // Camada de PLAYER (playerService). Fonte: Anivexa API.
 // GET /watch/:provider/:anilistId/sub|dub/:provider-:ep
 // Resposta: { anilistId, episode, audio, streams: [{url,type,server,subtitles,headers,...}] }
-import { PROVIDER_PRIORITY } from '../../../config/providers.js';
+import { PROVIDER_PRIORITY } from '../../config/providers.js';
 import { anivexaFetch } from './config.js';
 import { buildSugoiSlug, isSugoiEnabled, sugoiService } from '../sugoi/sugoiService.js';
 
