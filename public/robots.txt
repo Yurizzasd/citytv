@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /anime/
+Allow: /animes
+Allow: /populares
+Allow: /generos
+Disallow: /assistir/
+Disallow: /busca
+Disallow: /api/
+
+Sitemap: https://citytv.example.com/sitemap.xml
