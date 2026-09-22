@@ -62,6 +62,19 @@ export function availableProviders(payload) {
   });
 }
 
+// Teto de episódios a partir dos dados reais do AniList.
+// Evita exibir episódios de obras homônimas que algum provedor casou errado
+// (ex: OVA de 1 ep com 26 eps de outra obra no mesmo ID).
+export function episodeCap(details) {
+  if (!details) return null;
+  if (details.status === 'FINISHED' && Number.isFinite(details.episodes) && details.episodes > 0) {
+    return details.episodes;
+  }
+  const next = details.nextAiring?.episode;
+  if (Number.isFinite(next) && next > 1) return next - 1;
+  return null;
+}
+
 export const episodeService = {
   // Payload bruto (por provedor) — útil para a tela de detalhes + picker de servidor.
   // Sem filtro (= []) busca os 15 provedores (lento em animes gigantes).
@@ -73,9 +86,11 @@ export const episodeService = {
   },
 
   // Lista padrão: só os 6 mais rápidos + 60s de tolerância.
-  async list(anilistId) {
+  // `cap` corta números acima do total real (AniList) — ver episodeCap().
+  async list(anilistId, { cap = null } = {}) {
     const raw = await this.fetchRaw(anilistId, DEFAULT_PROVIDERS, { timeoutMs: 60000 });
-    const episodes = aggregateEpisodes(raw);
+    let episodes = aggregateEpisodes(raw);
+    if (Number.isFinite(cap) && cap > 0) episodes = episodes.filter((e) => e.number <= cap);
     return { raw, episodes, providers: availableProviders(raw) };
   },
 

@@ -4,6 +4,7 @@ import Meta from '../components/Meta.jsx';
 import VideoPlayer from '../components/VideoPlayer.jsx';
 import { PROVIDER_LABELS, PROVIDER_PRIORITY } from '../config/providers.js';
 import { animeService, episodeService, playerService } from '../services/api.js';
+import { episodeCap } from '../services/anivexa/episodeService.js';
 import { animeSlug, parseAnimeSlug } from '../utils/format.js';
 
 export default function Watch() {
@@ -32,14 +33,23 @@ export default function Watch() {
   // Catálogo + lista de episódios (para prev/next e destaque do atual)
   useEffect(() => {
     if (!anilistId) return;
-    animeService.details(anilistId).then(setAnime).catch(() => {});
-    episodeService
-      .list(anilistId)
-      .then((r) => {
+    let alive = true;
+    (async () => {
+      let details = null;
+      try {
+        details = await animeService.details(anilistId);
+        if (alive) setAnime(details);
+      } catch {}
+      try {
+        const r = await episodeService.list(anilistId, { cap: episodeCap(details) });
+        if (!alive) return;
         setEpList(r.episodes);
         if (!provider && r.providers.length) setProvider(r.providers[0]);
-      })
-      .catch(() => {});
+      } catch {}
+    })();
+    return () => {
+      alive = false;
+    };
   }, [anilistId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fonte do episódio atual

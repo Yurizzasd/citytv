@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Meta from '../components/Meta.jsx';
 import { PROVIDER_LABELS } from '../config/providers.js';
 import { animeService, episodeService } from '../services/api.js';
+import { episodeCap } from '../services/anivexa/episodeService.js';
 import { animeSlug, formatScore, parseAnimeSlug, stripHtml } from '../utils/format.js';
 
 export default function AnimeDetails() {
@@ -15,14 +16,21 @@ export default function AnimeDetails() {
   useEffect(() => {
     if (!anilistId) return;
     let alive = true;
-    animeService
-      .details(anilistId)
-      .then((a) => alive && setAnime(a))
-      .catch(() => alive && setAnime(null));
-    episodeService
-      .list(anilistId)
-      .then((r) => alive && setEps({ episodes: r.episodes, providers: r.providers, loading: false, error: null }))
-      .catch((e) => alive && setEps({ episodes: [], providers: [], loading: false, error: e }));
+    (async () => {
+      let details = null;
+      try {
+        details = await animeService.details(anilistId);
+        if (alive) setAnime(details);
+      } catch {
+        if (alive) setAnime(null);
+      }
+      try {
+        const r = await episodeService.list(anilistId, { cap: episodeCap(details) });
+        if (alive) setEps({ episodes: r.episodes, providers: r.providers, loading: false, error: null });
+      } catch (e) {
+        if (alive) setEps({ episodes: [], providers: [], loading: false, error: e });
+      }
+    })();
     return () => {
       alive = false;
     };
