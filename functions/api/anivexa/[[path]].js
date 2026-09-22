@@ -23,7 +23,7 @@ export async function onRequest({ request, env }) {
 
   const target = `${base}${suffix}${url.search}`;
   const ctrl = new AbortController();
-  const timeout = setTimeout(() => ctrl.abort(), 20000);
+  const timeout = setTimeout(() => ctrl.abort(), 60000);
   try {
     const upstream = await fetch(target, {
       method: request.method,

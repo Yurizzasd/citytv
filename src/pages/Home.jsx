@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import Hero from '../components/Hero.jsx';
 import Row from '../components/Row.jsx';
 import Meta from '../components/Meta.jsx';
-import AdSlot from '../components/ads/AdSlot.jsx';
-import { adsConfig } from '../config/ads.js';
 import { animeService } from '../services/api.js';
 import { useReveal } from '../hooks/hooks.js';
 
@@ -56,7 +54,6 @@ export default function Home() {
           </div>
         )}
         <Row title="Em alta" subtitle="O que todo mundo está vendo" items={data.trending} loading={loading} link="/animes" />
-        <AdSlot id={adsConfig.slots.homeBelowHero} />
         <Row title="Comédia sem lógica" subtitle="Não tente entender" items={data.comedy} loading={loading} link="/animes?genero=Comedy" />
         <Row title="Pancadaria garantida" subtitle="Ação do começo ao fim" items={data.action} loading={loading} link="/animes?genero=Action" />
         <Row title="Filmes" subtitle="Para maratonar num sábado" items={data.movies} loading={loading} link="/filmes" />

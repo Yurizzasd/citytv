@@ -3,8 +3,15 @@
 // GET /episodes/:provider/:anilistId (filtrado — mais rápido quando há preferência)
 import { PROVIDER_PRIORITY } from '../../config/providers.js';
 import { anivexaFetch, AnivexaError } from './config.js';
+import { apiConfig } from '../../config/site.js';
 
 const EP_TTL = 10 * 60 * 1000;
+
+// Provedores consultados por padrão: os mais rápidos/estáveis.
+// Buscar os 15 de uma vez deixa animes gigantes (ex: One Piece, 1100+ eps)
+// lentos — o mais lerdo dita o tempo da resposta. A rota filtrada
+// /episodes/:provider/.../:id da Anivexa existe exatamente para isso.
+export const DEFAULT_PROVIDERS = ['anizone', 'aniwaves', 'reanime', 'anikoto', 'animegg', 'anineko'];
 
 function providerEpisodes(payload, provider) {
   const node = payload?.[provider];
@@ -57,15 +64,17 @@ export function availableProviders(payload) {
 
 export const episodeService = {
   // Payload bruto (por provedor) — útil para a tela de detalhes + picker de servidor.
-  async fetchRaw(anilistId, providers = []) {
+  // Sem filtro (= []) busca os 15 provedores (lento em animes gigantes).
+  async fetchRaw(anilistId, providers = [], { timeoutMs = apiConfig.timeoutMs } = {}) {
     const id = Number(anilistId);
     if (!Number.isFinite(id)) throw new AnivexaError('Anime inválido.', { code: 'BAD_ID' });
     const path = providers.length ? `/episodes/${providers.join('/')}/${id}` : `/episodes/${id}`;
-    return anivexaFetch(path, { cacheKey: `ep:${id}:${providers.join(',') || 'all'}`, ttlMs: EP_TTL });
+    return anivexaFetch(path, { cacheKey: `ep:${id}:${providers.join(',') || 'all'}`, ttlMs: EP_TTL, timeoutMs });
   },
 
+  // Lista padrão: só os 6 mais rápidos + 60s de tolerância.
   async list(anilistId) {
-    const raw = await this.fetchRaw(anilistId);
+    const raw = await this.fetchRaw(anilistId, DEFAULT_PROVIDERS, { timeoutMs: 60000 });
     const episodes = aggregateEpisodes(raw);
     return { raw, episodes, providers: availableProviders(raw) };
   },

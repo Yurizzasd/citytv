@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Meta from '../components/Meta.jsx';
-import AdSlot from '../components/ads/AdSlot.jsx';
-import { adsConfig } from '../config/ads.js';
 import { PROVIDER_LABELS } from '../config/providers.js';
 import { animeService, episodeService } from '../services/api.js';
 import { animeSlug, formatScore, parseAnimeSlug, stripHtml } from '../utils/format.js';
@@ -93,7 +91,6 @@ export default function AnimeDetails() {
             </div>
           </div>
           <div className="wrap">
-            <AdSlot id={adsConfig.slots.animeBelowInfo} />
             <section className="section">
               <div className="section-head"><h2>Episódios</h2></div>
               {eps.loading ? (

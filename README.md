@@ -38,7 +38,7 @@ npm run sitemap         # gera public/sitemap.xml (defina SITE_URL)
 
 ```
 src/
-  components/ (Header, Hero, AnimeCard, Row, VideoPlayer, ads/AdSlot, States, Meta, Footer)
+  components/ (Header, Hero, AnimeCard, Row, VideoPlayer, States, Meta, Footer)
   pages/ (Home, Animes, Generos, Populares, Search, AnimeDetails, Watch)
   services/
     anilist/ (client, queries)
@@ -46,13 +46,6 @@ src/
   hooks/ utils/ config/ styles (index.css) data/mocks.js (só dev)
 functions/api/anivexa/[[path]].js  # proxy server-side Cloudflare
 ```
-
-## Anúncios (AdCash)
-
-Desligados por padrão. Slots prontos (máx. 1 por página, nunca sobre o player):
-`homeBelowHero`, `browseMid`, `animeBelowInfo`, `watchBelowPlayer` — ver `src/config/ads.js`
-e `src/components/ads/AdSlot.jsx`. Para ativar: `VITE_ADCASH_ENABLED=true` +
-`VITE_ADCASH_SCRIPT_URL` + colar o snippet oficial no `AdSlot`.
 
 ## URLs amigáveis
 

@@ -12,13 +12,13 @@ export class AnivexaError extends Error {
   }
 }
 
-export async function anivexaFetch(path, { ttlMs = 0, cacheKey = '' } = {}) {
+export async function anivexaFetch(path, { ttlMs = 0, cacheKey = '', timeoutMs = apiConfig.timeoutMs } = {}) {
   const url = `${anivexaBaseUrl()}${path}`;
   const run = async () => {
     let res;
     try {
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), apiConfig.timeoutMs);
+      const t = setTimeout(() => ctrl.abort(), timeoutMs);
       res = await fetch(url, { headers: { Accept: 'application/json' }, signal: ctrl.signal }).finally(() =>
         clearTimeout(t),
       );

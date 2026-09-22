@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Meta from '../components/Meta.jsx';
 import VideoPlayer from '../components/VideoPlayer.jsx';
-import AdSlot from '../components/ads/AdSlot.jsx';
-import { adsConfig } from '../config/ads.js';
 import { PROVIDER_LABELS, PROVIDER_PRIORITY } from '../config/providers.js';
 import { animeService, episodeService, playerService } from '../services/api.js';
 import { animeSlug, parseAnimeSlug } from '../utils/format.js';
@@ -152,7 +150,6 @@ export default function Watch() {
                 )}
               </div>
             )}
-            <AdSlot id={adsConfig.slots.watchBelowPlayer} />
           </div>
           <aside className="side" aria-label="Episódios">
             <h3>Episódios</h3>
